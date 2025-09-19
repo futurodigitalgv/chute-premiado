@@ -55,7 +55,30 @@
 </section>
  <section class="conteudo-bg">
     <div class="container">
-      
+      <section class="matches-section">
+  <div class="cards-grid">
+    <div class="match-card" *ngFor="let jogo of jogos">
+      <div class="match-header">
+        <div class="team">
+          <img class="team-logo" [src]="jogo.casaLogo" [alt]="jogo.casaNome">
+        </div>
+
+        <div class="versus">X</div>
+
+        <div class="team">
+          <img class="team-logo" [src]="jogo.foraLogo" [alt]="jogo.foraNome">
+        </div>
+      </div>
+
+      <div class="match-info">
+        <div class="match-title">{{ jogo.casaNome }} x {{ jogo.foraNome }}</div>
+        <div class="match-date">{{ jogo.data | date:'dd/MM/yyyy · HH:mm' }}</div>
+      </div>
+
+      <button class="btn-bolao">FAZER BOLÃO</button>
+    </div>
+  </div>
+</section>
     </div>
   </section>
 </main>

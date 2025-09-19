@@ -1,0 +1,91 @@
+/* Barra */
+.nav-bar-cor {
+  background: #223622;
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+}
+.navbar .container-fluid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 100px;
+  padding: 0 24px;
+}
+
+/* Logo */
+.logo-chute {
+  height: 100px; /* desktop/large */
+  width: auto;
+  display: block;
+}
+
+/* Lado direito (botão + perfil) */
+.right-side {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Botão MINHAS APOSTAS */
+.btn-acao {
+  background: #fff;
+  color: #111;
+  border: 0;
+  border-radius: 10px;
+  padding: 8px 18px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, transform .06s ease;
+  text-transform: uppercase;
+}
+.btn-acao:hover { background: #1f7a1f; color: #fff; }
+
+/* Perfil (avatar + nome) */
+.perfil { display: flex; align-items: center; gap: 8px; }
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  object-fit: cover; display: block;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.9);
+}
+.nome { color: #fff; font-weight: 600; line-height: 1; }
+
+/* ----------------- Responsivo ----------------- */
+
+/* Tablets e menores */
+@media (max-width: 768px) {
+  .navbar .container-fluid {
+    height: auto;           /* permite crescer conforme conteúdo */
+    padding: 10px 14px;
+    gap: 10px;
+  }
+  .logo-chute { height: 48px; }   /* reduz logo */
+  .btn-acao { padding: 8px 14px; font-size: .9rem; }
+  .avatar { width: 34px; height: 34px; }
+}
+
+/* Celulares médios (empacota melhor o lado direito) */
+@media (max-width: 560px) {
+  .right-side {
+    gap: 10px;
+    flex-wrap: nowrap;     /* mantém na mesma linha quando der */
+  }
+  .btn-acao { padding: 6px 12px; font-size: .85rem; }
+  .nome { font-size: .85rem; }
+}
+
+/* Celulares pequenos (prioriza caber tudo) */
+@media (max-width: 420px) {
+  .navbar .container-fluid {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  .logo-chute { height: 40px; }
+  .btn-acao {
+    padding: 6px 10px;
+    font-size: .8rem;
+    border-radius: 8px;
+  }
+  .nome { display: none; }    /* some o nome para ganhar espaço */
+  .avatar { width: 32px; height: 32px; }
+}

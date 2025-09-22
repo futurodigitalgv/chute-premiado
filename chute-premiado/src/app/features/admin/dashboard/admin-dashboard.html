@@ -1,0 +1,182 @@
+<header class="admin-header">
+    <nav class="navbar nav-bar-cor">
+      <div class="container-fluid">
+        <!-- Logo e Título -->
+        <div class="left-side">
+          <a class="navbar-brand" href="#">
+            <img class="logo-chute" src="assets/img/logo.png" alt="Logo Chute Certeiro" />
+          </a>
+          <div class="admin-title">
+            <h1>Painel Administrativo</h1>
+          </div>
+        </div>
+
+        <!-- Lado direito: logout -->
+        <div class="right-side">
+          <button type="button" class="btn-logout" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i>
+            Sair
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="admin-main">
+    <div class="container">
+      <!-- Cabeçalho com botões de ação -->
+      <div class="admin-header-section">
+        <h2>Painel Administrativo</h2>
+        <div class="admin-actions">
+          <button 
+            type="button" 
+            class="btn-action btn-create-game"
+            (click)="toggleCreateForm()"
+          >
+            <i class="bi bi-plus-circle"></i>
+            Criar Novo Jogo
+          </button>
+          
+          <button 
+            type="button" 
+            class="btn-action btn-manage-players"
+            (click)="goToPlayers()"
+          >
+            <i class="bi bi-people"></i>
+            Gerenciar Jogadores
+          </button>
+          
+          <button 
+            type="button" 
+            class="btn-action btn-manage-finance"
+            (click)="goToFinance()"
+          >
+            <i class="bi bi-graph-up"></i>
+            Gerenciar Finanças
+          </button>
+        </div>
+      </div>
+
+      <!-- Lista de jogos -->
+      <div class="games-section">
+        <div class="games-grid" *ngIf="jogos.length > 0; else noGames">
+          <div class="game-card" *ngFor="let jogo of jogos">
+            <div class="game-header">
+              <div class="team">
+                <img class="team-logo" [src]="jogo.casaLogo" [alt]="jogo.casaNome">
+                <span class="team-name">{{ jogo.casaNome }}</span>
+              </div>
+
+              <div class="versus">X</div>
+
+              <div class="team">
+                <img class="team-logo" [src]="jogo.foraLogo" [alt]="jogo.foraNome">
+                <span class="team-name">{{ jogo.foraNome }}</span>
+              </div>
+            </div>
+
+            <div class="game-info">
+              <div class="game-details">
+                <div class="detail-item">
+                  <i class="bi bi-calendar"></i>
+                  <span>{{ formatDate(jogo.data) }}</span>
+                </div>
+                <div class="detail-item">
+                  <i class="bi bi-clock"></i>
+                  <span>Encerramento: {{ formatDate(jogo.horarioEncerramento) }}</span>
+                </div>
+                <div class="detail-item">
+                  <i class="bi bi-currency-dollar"></i>
+                  <span>Valor: R$ {{ jogo.valorAposta.toFixed(2) }}</span>
+                </div>
+              </div>
+
+              <div class="game-status">
+                <span class="status-badge" [ngClass]="getStatusClass(jogo)">
+                  {{ getStatus(jogo) }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Placar final se finalizado -->
+            <div class="game-score" *ngIf="jogo.finalizado">
+              <div class="score-display">
+                <span class="score">{{ jogo.placarCasa }}</span>
+                <span class="score-separator">-</span>
+                <span class="score">{{ jogo.placarFora }}</span>
+              </div>
+            </div>
+
+            <!-- Ações -->
+            <div class="game-actions">
+              <button 
+                type="button" 
+                class="btn-action btn-edit"
+                (click)="editJogo(jogo)"
+                title="Editar Jogo"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
+
+              <button 
+                type="button" 
+                class="btn-action btn-stats"
+                (click)="showStats(jogo)"
+                title="Ver Estatísticas"
+              >
+                <i class="bi bi-bar-chart"></i>
+              </button>
+
+              <button 
+                type="button" 
+                class="btn-action btn-score"
+                (click)="showScoreModal(jogo)"
+                [disabled]="jogo.finalizado"
+                title="Inserir Placar Final"
+              >
+                <i class="bi bi-trophy"></i>
+              </button>
+
+              <button 
+                type="button" 
+                class="btn-action btn-delete"
+                (click)="deleteJogo(jogo)"
+                title="Excluir Jogo"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noGames>
+          <div class="no-games">
+            <i class="bi bi-calendar-x"></i>
+            <h3>Nenhum jogo cadastrado</h3>
+            <p>Clique em "Criar Novo Jogo" para começar</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </main>
+
+  <!-- Formulário de criar/editar jogo -->
+  <app-game-form 
+    *ngIf="showCreateForm"
+    [jogo]="editingJogo"
+    (close)="onFormClose()"
+  ></app-game-form>
+
+  <!-- Modal de estatísticas -->
+  <app-stats-modal 
+    *ngIf="selectedJogoForStats"
+    [jogo]="selectedJogoForStats"
+    (close)="closeStatsModal()"
+  ></app-stats-modal>
+
+  <!-- Modal de placar final -->
+  <app-score-modal 
+    *ngIf="selectedJogoForScore"
+    [jogo]="selectedJogoForScore"
+    (close)="closeScoreModal()"
+  ></app-score-modal>

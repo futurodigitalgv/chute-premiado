@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chute Certeiro</title>
-  </head>
-  <body>
- <header>
+<header>
   <nav class="navbar nav-bar-cor">
     <div class="container-fluid">
       <!-- Logo -->
@@ -14,13 +6,41 @@
         <img class="logo-chute" src="assets/img/logo.png" alt="Logo Chute Certeiro" />
       </a>
 
-      <!-- Lado direito: botão + perfil -->
+      <!-- Lado direito: botões de login/cadastro ou perfil do usuário -->
       <div class="right-side">
-        <button type="button" class="btn-acao">MINHAS APOSTAS</button>
+        <!-- Botões quando não logado -->
+        <div *ngIf="!isLoggedIn">
+          <button type="button" class="btn-acao btn-login" (click)="goToLogin()">
+            <i class="bi bi-box-arrow-in-right"></i>
+            ENTRAR
+          </button>
+          
+          <button type="button" class="btn-acao btn-register" (click)="goToRegister()">
+            <i class="bi bi-person-plus"></i>
+            CADASTRAR
+          </button>
+        </div>
 
-        <div class="perfil">
-          <img class="avatar" src="assets/img/logo.png" alt="Samuel" />
-          <span class="nome">Samuel</span>
+        <!-- Perfil quando logado -->
+        <div *ngIf="isLoggedIn" class="user-profile">
+          <div class="user-info">
+            <div class="perfil">
+              <img class="avatar" src="assets/img/logo.png" [alt]="userName" />
+              <div class="user-details">
+                <span class="nome">{{ userName }}</span>
+                <span class="credits">{{ formatCurrency(userCredits) }}</span>
+              </div>
+            </div>
+            
+            <button type="button" class="btn-acao btn-credits" (click)="goToCredits()">
+              <i class="bi bi-plus-circle"></i>
+              INSERIR CRÉDITO
+            </button>
+            
+            <button type="button" class="btn-logout" (click)="logout()">
+              <i class="bi bi-box-arrow-right"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -75,7 +95,7 @@
         <div class="match-date">{{ jogo.data | date:'dd/MM/yyyy · HH:mm' }}</div>
       </div>
 
-      <button class="btn-bolao">FAZER BOLÃO</button>
+      <button class="btn-bolao" (click)="openBetModal(jogo)" style="pointer-events: auto; z-index: 10; position: relative;">FAZER BOLÃO</button>
     </div>
   </div>
 </section>
@@ -83,5 +103,35 @@
   </section>
 </main>
 
-  </body>
-</html>
+<!-- Modal de Apostas Simples -->
+<div *ngIf="showBetModal" class="modal-overlay" (click)="closeBetModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    
+    <h2>Fazer Aposta</h2>
+    
+    <div *ngIf="selectedJogo">
+      <h3>{{ selectedJogo.casaNome }} x {{ selectedJogo.foraNome }}</h3>
+      <p>{{ selectedJogo.data | date:'dd/MM/yyyy · HH:mm' }}</p>
+    </div>
+    
+    <div>
+      <label>Seu Palpite:</label>
+      <div class="score-inputs">
+        <input type="number" [(ngModel)]="placarCasa" placeholder="Casa">
+        <span>X</span>
+        <input type="number" [(ngModel)]="placarFora" placeholder="Fora">
+      </div>
+    </div>
+    
+    <div>
+      <label>Valor da Aposta:</label>
+      <input type="number" [(ngModel)]="valorAposta" placeholder="R$">
+    </div>
+    
+    <div class="modal-buttons">
+      <button (click)="fazerAposta()">Apostar</button>
+      <button (click)="closeBetModal()">Cancelar</button>
+    </div>
+    
+  </div>
+</div>

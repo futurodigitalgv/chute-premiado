@@ -1,0 +1,269 @@
+<header>
+  <nav class="navbar nav-bar-cor">
+    <div class="container-fluid">
+      <!-- Logo centralizada -->
+      <div class="logo-center">
+        <a class="navbar-brand" href="#">
+          <img class="logo-chute" src="assets/img/logo.png" alt="Logo Chute Certeiro" />
+        </a>
+      </div>
+
+      <!-- Lado direito: voltar -->
+      <div class="right-side">
+        <button type="button" class="btn-back" (click)="goBack()">
+          <i class="bi bi-arrow-left"></i>
+          Voltar
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="credits-main">
+    <div class="container">
+      <div class="credits-content">
+        <!-- Informações do usuário -->
+        <div class="user-info" *ngIf="usuario">
+          <h1>Comprar Créditos</h1>
+          <div class="user-balance">
+            <div class="balance-card">
+              <div class="balance-icon">
+                <i class="bi bi-wallet2"></i>
+              </div>
+              <div class="balance-content">
+                <div class="balance-value">{{ formatCurrency(usuario.creditos) }}</div>
+                <div class="balance-label">Créditos Disponíveis</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Opções de compra -->
+        <div class="purchase-options">
+          <h2>Escolha o valor que deseja comprar</h2>
+          <p class="purchase-info">1 Real = 1 Crédito</p>
+          
+          <div class="options-grid">
+            <div 
+              class="option-card" 
+              *ngFor="let opcao of opcoesCompra"
+              [class.selected]="valorCompra === opcao.valor"
+              (click)="selectOption(opcao)"
+            >
+              <div class="option-value">{{ opcao.label }}</div>
+              <div class="option-credits">{{ opcao.creditos }} créditos</div>
+            </div>
+          </div>
+
+          <div class="custom-amount" *ngIf="valorCompra > 0">
+            <h3>Resumo da Compra</h3>
+            <div class="purchase-summary">
+              <div class="summary-item">
+                <span>Valor:</span>
+                <span>{{ formatCurrency(valorCompra) }}</span>
+              </div>
+              <div class="summary-item">
+                <span>Créditos:</span>
+                <span>{{ creditosCompra }}</span>
+              </div>
+              <div class="summary-item total">
+                <span>Total:</span>
+                <span>{{ formatCurrency(valorCompra) }}</span>
+              </div>
+            </div>
+
+            <button 
+              type="button" 
+              class="btn-purchase"
+              (click)="iniciarCompra()"
+            >
+              <i class="bi bi-credit-card"></i>
+              Comprar com Mercado Pago
+            </button>
+          </div>
+        </div>
+
+        <!-- Histórico de compras -->
+        <div class="purchase-history" *ngIf="usuario">
+          <h2>Histórico de Compras</h2>
+          <div class="history-list" *ngIf="getTransacoesRecentes().length > 0; else noHistory">
+            <div class="history-item" *ngFor="let transacao of getTransacoesRecentes()">
+              <div class="history-icon">
+                <i class="bi bi-credit-card"></i>
+              </div>
+              <div class="history-content">
+                <div class="history-description">{{ transacao.descricao }}</div>
+                <div class="history-date">{{ formatDate(transacao.data) }}</div>
+              </div>
+              <div class="history-value">
+                <div class="value-amount">{{ formatCurrency(transacao.valor) }}</div>
+                <div class="value-status" [ngClass]="'status-' + transacao.status">
+                  {{ transacao.status === 'aprovado' ? 'Aprovado' : 'Pendente' }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #noHistory>
+            <div class="no-history">
+              <i class="bi bi-receipt"></i>
+              <p>Nenhuma compra realizada ainda</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+</main>
+
+<!-- Modal de pagamento -->
+  <div class="modal-overlay" *ngIf="showPaymentModal" (click)="cancelarCompra()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Pagamento via Mercado Pago</h3>
+        <button type="button" class="btn-close" (click)="cancelarCompra()">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="payment-info">
+          <div class="payment-summary">
+            <h4>Resumo do Pagamento</h4>
+            <div class="summary-details">
+              <div class="detail-item">
+                <span>Valor:</span>
+                <span>{{ formatCurrency(valorCompra) }}</span>
+              </div>
+              <div class="detail-item">
+                <span>Créditos:</span>
+                <span>{{ creditosCompra }}</span>
+              </div>
+              <div class="detail-item total">
+                <span>Total:</span>
+                <span>{{ formatCurrency(valorCompra) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="payment-methods">
+            <h4>Escolha o método de pagamento</h4>
+            <div class="payment-options">
+              <div 
+                class="payment-option" 
+                [class.selected]="paymentMethod === 'checkout'"
+                (click)="selecionarMetodoPagamento('checkout')"
+              >
+                <div class="option-icon">
+                  <i class="bi bi-credit-card"></i>
+                </div>
+                <div class="option-content">
+                  <h5>Checkout Mercado Pago</h5>
+                  <p>Cartão de crédito, débito, PIX e saldo</p>
+                </div>
+                <div class="option-radio">
+                  <input type="radio" [checked]="paymentMethod === 'checkout'">
+                </div>
+              </div>
+              
+              <div 
+                class="payment-option" 
+                [class.selected]="paymentMethod === 'pix'"
+                (click)="selecionarMetodoPagamento('pix')"
+              >
+                <div class="option-icon">
+                  <i class="bi bi-qr-code"></i>
+                </div>
+                <div class="option-content">
+                  <h5>PIX Instantâneo</h5>
+                  <p>Pagamento imediato via QR Code</p>
+                </div>
+                <div class="option-radio">
+                  <input type="radio" [checked]="paymentMethod === 'pix'">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="payment-note">
+            <i class="bi bi-info-circle"></i>
+            <p>Você será redirecionado para o Mercado Pago para finalizar o pagamento</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="cancelarCompra()">
+          Cancelar
+        </button>
+        
+        <button 
+          type="button" 
+          class="btn-confirm"
+          (click)="processarPagamento()"
+          [disabled]="isLoading"
+        >
+          <span *ngIf="isLoading">Processando...</span>
+          <span *ngIf="!isLoading">Pagar com Mercado Pago</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal PIX -->
+<div class="modal-overlay" *ngIf="showPixModal" (click)="fecharPixModal()">
+  <div class="modal-content pix-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Pagamento via PIX</h3>
+      <button type="button" class="btn-close" (click)="fecharPixModal()">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="pix-info" *ngIf="currentPayment">
+        <div class="pix-summary">
+          <h4>Resumo do Pagamento</h4>
+          <div class="summary-details">
+            <div class="detail-item">
+              <span>Valor:</span>
+              <span>{{ formatCurrency(valorCompra) }}</span>
+            </div>
+            <div class="detail-item">
+              <span>Créditos:</span>
+              <span>{{ creditosCompra }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pix-qr">
+          <h4>Escaneie o QR Code com seu app bancário</h4>
+          <div class="qr-container">
+            <img [src]="currentPayment.qr_code_base64" alt="QR Code PIX" class="qr-code">
+          </div>
+          <p class="qr-instructions">
+            1. Abra o app do seu banco<br>
+            2. Escaneie o QR Code<br>
+            3. Confirme o pagamento
+          </p>
+        </div>
+
+        <div class="pix-status">
+          <div class="status-loading" *ngIf="isLoading">
+            <i class="bi bi-hourglass-split"></i>
+            <span>Aguardando pagamento...</span>
+          </div>
+          <div class="status-success" *ngIf="!isLoading">
+            <i class="bi bi-check-circle"></i>
+            <span>Pagamento aprovado!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn-cancel" (click)="fecharPixModal()">
+        Fechar
+      </button>
+    </div>
+  </div>
+</div>

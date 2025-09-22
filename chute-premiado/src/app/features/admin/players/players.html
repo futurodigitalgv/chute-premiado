@@ -1,0 +1,281 @@
+<header class="admin-header">
+    <nav class="navbar nav-bar-cor">
+      <div class="container-fluid">
+        <!-- Logo e Título -->
+        <div class="left-side">
+          <a class="navbar-brand" href="#">
+            <img class="logo-chute" src="assets/img/logo.png" alt="Logo Chute Certeiro" />
+          </a>
+          <div class="admin-title">
+            <h1>Gerenciar Jogadores</h1>
+          </div>
+        </div>
+
+        <!-- Lado direito: voltar -->
+        <div class="right-side">
+          <button type="button" class="btn-back" (click)="goBack()">
+            <i class="bi bi-arrow-left"></i>
+            Voltar ao Dashboard
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="admin-main">
+    <div class="container">
+      <!-- Lista de jogadores -->
+      <div class="players-section">
+        <div class="players-grid" *ngIf="usuarios.length > 0; else noPlayers">
+          <div class="player-card" *ngFor="let usuario of usuarios" (click)="selectUsuario(usuario)">
+            <div class="player-header">
+              <div class="player-avatar">
+                <i class="bi bi-person-circle"></i>
+              </div>
+              <div class="player-info">
+                <h3>{{ usuario.nome }}</h3>
+                <p>{{ usuario.email }}</p>
+                <span class="status-badge" [ngClass]="getStatusClass(usuario)">
+                  {{ getStatusText(usuario) }}
+                </span>
+              </div>
+            </div>
+
+            <div class="player-stats">
+              <div class="stat-item">
+                <i class="bi bi-wallet2"></i>
+                <span>{{ formatCurrency(usuario.creditos) }}</span>
+                <small>Créditos</small>
+              </div>
+              <div class="stat-item">
+                <i class="bi bi-trophy"></i>
+                <span>{{ usuario.apostasVencedoras }}</span>
+                <small>Vitórias</small>
+              </div>
+              <div class="stat-item">
+                <i class="bi bi-graph-up"></i>
+                <span>{{ getEstatisticasUsuario(usuario).taxaVitoria.toFixed(1) }}%</span>
+                <small>Taxa Vitória</small>
+              </div>
+            </div>
+
+            <div class="player-actions">
+              <button 
+                type="button" 
+                class="btn-action btn-block"
+                (click)="openBlockModal(usuario); $event.stopPropagation()"
+                [class.btn-unblock]="usuario.bloqueado"
+                [title]="usuario.bloqueado ? 'Desbloquear' : 'Bloquear'"
+              >
+                <i class="bi" [ngClass]="usuario.bloqueado ? 'bi-unlock' : 'bi-lock'"></i>
+              </button>
+
+              <button 
+                type="button" 
+                class="btn-action btn-delete"
+                (click)="openDeleteModal(usuario); $event.stopPropagation()"
+                title="Excluir"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noPlayers>
+          <div class="no-players">
+            <i class="bi bi-people"></i>
+            <h3>Nenhum jogador cadastrado</h3>
+            <p>Os jogadores aparecerão aqui quando se cadastrarem</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Detalhes do jogador selecionado -->
+      <div class="player-details" *ngIf="selectedUsuario">
+        <div class="details-header">
+          <h2>{{ selectedUsuario.nome }}</h2>
+          <button type="button" class="btn-close-details" (click)="selectedUsuario = null">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+
+        <div class="details-content">
+          <!-- Informações pessoais -->
+          <div class="details-section">
+            <h3>Informações Pessoais</h3>
+            <div class="info-grid">
+              <div class="info-item">
+                <label>Nome:</label>
+                <span>{{ selectedUsuario.nome }}</span>
+              </div>
+              <div class="info-item">
+                <label>Email:</label>
+                <span>{{ selectedUsuario.email }}</span>
+              </div>
+              <div class="info-item">
+                <label>Telefone:</label>
+                <span>{{ selectedUsuario.telefone }}</span>
+              </div>
+              <div class="info-item">
+                <label>Chave PIX:</label>
+                <span>{{ selectedUsuario.chavePix }}</span>
+              </div>
+              <div class="info-item">
+                <label>Data de Cadastro:</label>
+                <span>{{ formatDate(selectedUsuario.dataCadastro) }}</span>
+              </div>
+              <div class="info-item" *ngIf="selectedUsuario.bloqueado">
+                <label>Motivo do Bloqueio:</label>
+                <span class="block-reason">{{ selectedUsuario.motivoBloqueio }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Estatísticas financeiras -->
+          <div class="details-section">
+            <h3>Estatísticas Financeiras</h3>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-wallet2"></i>
+                </div>
+                <div class="stat-content">
+                  <div class="stat-value">{{ formatCurrency(selectedUsuario.creditos) }}</div>
+                  <div class="stat-label">Créditos Atuais</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-arrow-up-circle text-success"></i>
+                </div>
+                <div class="stat-content">
+                  <div class="stat-value">{{ formatCurrency(selectedUsuario.creditosGanhos) }}</div>
+                  <div class="stat-label">Total Ganho</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-arrow-down-circle text-danger"></i>
+                </div>
+                <div class="stat-content">
+                  <div class="stat-value">{{ formatCurrency(selectedUsuario.creditosGastos) }}</div>
+                  <div class="stat-label">Total Gasto</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-graph-up"></i>
+                </div>
+                <div class="stat-content">
+                  <div class="stat-value">{{ getEstatisticasUsuario(selectedUsuario).taxaVitoria.toFixed(1) }}%</div>
+                  <div class="stat-label">Taxa de Vitória</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Histórico de apostas -->
+          <div class="details-section">
+            <h3>Histórico de Apostas</h3>
+            <div class="betting-stats">
+              <div class="betting-item">
+                <span class="betting-label">Total de Apostas:</span>
+                <span class="betting-value">{{ selectedUsuario.totalApostas }}</span>
+              </div>
+              <div class="betting-item">
+                <span class="betting-label">Apostas Vencedoras:</span>
+                <span class="betting-value">{{ selectedUsuario.apostasVencedoras }}</span>
+              </div>
+              <div class="betting-item">
+                <span class="betting-label">Apostas Perdedoras:</span>
+                <span class="betting-value">{{ selectedUsuario.totalApostas - selectedUsuario.apostasVencedoras }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal de bloqueio -->
+  <div class="modal-overlay" *ngIf="showBlockModal" (click)="closeModals()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ selectedUsuario?.bloqueado ? 'Desbloquear' : 'Bloquear' }} Jogador</h3>
+        <button type="button" class="btn-close" (click)="closeModals()">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p><strong>{{ selectedUsuario?.nome }}</strong></p>
+        
+        <div class="form-group" *ngIf="!selectedUsuario?.bloqueado">
+          <label for="motivoBloqueio">Motivo do Bloqueio:</label>
+          <textarea 
+            id="motivoBloqueio"
+            [(ngModel)]="motivoBloqueio"
+            class="form-control"
+            rows="3"
+            placeholder="Digite o motivo do bloqueio..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="block-info" *ngIf="selectedUsuario?.bloqueado">
+          <p><strong>Motivo atual:</strong> {{ selectedUsuario?.motivoBloqueio }}</p>
+          <p><strong>Data do bloqueio:</strong> {{ getDataBloqueioFormatada() }}</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="closeModals()">
+          Cancelar
+        </button>
+        
+        <button 
+          type="button" 
+          class="btn-confirm"
+          (click)="selectedUsuario?.bloqueado ? unblockUsuario(selectedUsuario!) : blockUsuario()"
+          [disabled]="!selectedUsuario?.bloqueado && !motivoBloqueio.trim()"
+        >
+          {{ selectedUsuario?.bloqueado ? 'Desbloquear' : 'Bloquear' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de exclusão -->
+  <div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeModals()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Excluir Jogador</h3>
+        <button type="button" class="btn-close" (click)="closeModals()">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="warning-message">
+          <i class="bi bi-exclamation-triangle"></i>
+          <h4>Atenção!</h4>
+          <p>Tem certeza que deseja excluir o jogador <strong>{{ selectedUsuario?.nome }}</strong>?</p>
+          <p>Esta ação não pode ser desfeita e todos os dados do jogador serão perdidos.</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="closeModals()">
+          Cancelar
+        </button>
+        
+        <button type="button" class="btn-delete-confirm" (click)="deleteUsuario()">
+          Excluir Definitivamente
+        </button>
+      </div>
+    </div>
+  </div>

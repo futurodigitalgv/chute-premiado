@@ -1,0 +1,228 @@
+<header class="admin-header">
+    <nav class="navbar nav-bar-cor">
+      <div class="container-fluid">
+        <!-- Logo e Título -->
+        <div class="left-side">
+          <a class="navbar-brand" href="#">
+            <img class="logo-chute" src="assets/img/logo.png" alt="Logo Chute Certeiro" />
+          </a>
+          <div class="admin-title">
+            <h1>Gerenciar Finanças</h1>
+          </div>
+        </div>
+
+        <!-- Lado direito: voltar -->
+        <div class="right-side">
+          <button type="button" class="btn-back" (click)="goBack()">
+            <i class="bi bi-arrow-left"></i>
+            Voltar ao Dashboard
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="admin-main">
+    <div class="container">
+      <!-- Resumo Financeiro -->
+      <div class="finance-summary">
+        <h2>Resumo Financeiro</h2>
+        <div class="summary-grid">
+          <div class="summary-card receita">
+            <div class="card-icon">
+              <i class="bi bi-arrow-up-circle"></i>
+            </div>
+            <div class="card-content">
+              <div class="card-value">{{ formatCurrency(getResumoFinanceiro().receitaTotal) }}</div>
+              <div class="card-label">Receita Total</div>
+              <div class="card-subtitle">Créditos vendidos</div>
+            </div>
+          </div>
+
+          <div class="summary-card despesa">
+            <div class="card-icon">
+              <i class="bi bi-arrow-down-circle"></i>
+            </div>
+            <div class="card-content">
+              <div class="card-value">{{ formatCurrency(getResumoFinanceiro().despesaTotal) }}</div>
+              <div class="card-label">Despesa Total</div>
+              <div class="card-subtitle">Ganhos pagos</div>
+            </div>
+          </div>
+
+          <div class="summary-card lucro">
+            <div class="card-icon">
+              <i class="bi bi-graph-up"></i>
+            </div>
+            <div class="card-content">
+              <div class="card-value">{{ formatCurrency(getResumoFinanceiro().lucroLiquido) }}</div>
+              <div class="card-label">Lucro Líquido</div>
+              <div class="card-subtitle">{{ getResumoFinanceiro().margemLucro.toFixed(1) }}% de margem</div>
+            </div>
+          </div>
+
+          <div class="summary-card creditos">
+            <div class="card-icon">
+              <i class="bi bi-wallet2"></i>
+            </div>
+            <div class="card-content">
+              <div class="card-value">{{ formatCurrency(estatisticas.creditosDisponiveis) }}</div>
+              <div class="card-label">Créditos em Circulação</div>
+              <div class="card-subtitle">Não utilizados</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detalhamento por Categoria -->
+      <div class="finance-breakdown">
+        <h2>Detalhamento por Categoria</h2>
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <h3>💰 Valor da Casa</h3>
+            <div class="breakdown-content">
+              <div class="breakdown-item">
+                <span class="breakdown-label">Taxa da Casa (10%):</span>
+                <span class="breakdown-value">{{ formatCurrency(estatisticas.valorCasa * 0.1) }}</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">Jogos sem Ganhadores:</span>
+                <span class="breakdown-value">{{ formatCurrency(estatisticas.valorCasa * 0.9) }}</span>
+              </div>
+              <div class="breakdown-item total">
+                <span class="breakdown-label">Total da Casa:</span>
+                <span class="breakdown-value">{{ formatCurrency(estatisticas.valorCasa) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="breakdown-card">
+            <h3>🎯 Créditos Vendidos</h3>
+            <div class="breakdown-content">
+              <div class="breakdown-item">
+                <span class="breakdown-label">Total Vendido:</span>
+                <span class="breakdown-value">{{ formatCurrency(estatisticas.totalCreditosVendidos) }}</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">Em Circulação:</span>
+                <span class="breakdown-value">{{ formatCurrency(estatisticas.creditosDisponiveis) }}</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">Utilizados:</span>
+                <span class="breakdown-value">{{ formatCurrency(estatisticas.totalCreditosVendidos - estatisticas.creditosDisponiveis) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="breakdown-card">
+            <h3>🏆 Prêmios Pagos</h3>
+            <div class="breakdown-content">
+              <div class="breakdown-item">
+                <span class="breakdown-label">Total Pago:</span>
+                <span class="breakdown-value">{{ formatCurrency(estatisticas.totalCreditosGanhos) }}</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">Créditos Gastos:</span>
+                <span class="breakdown-value">{{ formatCurrency(estatisticas.totalCreditosGastos) }}</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">Taxa de Retorno:</span>
+                <span class="breakdown-value">{{ estatisticas.totalCreditosGastos > 0 ? ((estatisticas.totalCreditosGanhos / estatisticas.totalCreditosGastos) * 100).toFixed(1) : 0 }}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transações Recentes -->
+      <div class="transactions-section">
+        <h2>Transações Recentes</h2>
+        <div class="transactions-table">
+          <div class="table-header">
+            <div class="header-cell">Data</div>
+            <div class="header-cell">Tipo</div>
+            <div class="header-cell">Valor</div>
+            <div class="header-cell">Créditos</div>
+            <div class="header-cell">Status</div>
+            <div class="header-cell">Descrição</div>
+          </div>
+          
+          <div class="table-body" *ngIf="getTransacoesRecentes().length > 0; else noTransactions">
+            <div class="table-row" *ngFor="let transacao of getTransacoesRecentes()">
+              <div class="table-cell">{{ formatDate(transacao.data) }}</div>
+              <div class="table-cell">
+                <span class="transaction-type" [ngClass]="getTipoTransacaoClass(transacao.tipo)">
+                  {{ getTipoTransacaoText(transacao.tipo) }}
+                </span>
+              </div>
+              <div class="table-cell">{{ formatCurrency(transacao.valor) }}</div>
+              <div class="table-cell">{{ transacao.creditos }}</div>
+              <div class="table-cell">
+                <span class="status-badge" [ngClass]="getStatusClass(transacao.status)">
+                  {{ getStatusText(transacao.status) }}
+                </span>
+              </div>
+              <div class="table-cell">{{ transacao.descricao }}</div>
+            </div>
+          </div>
+
+          <ng-template #noTransactions>
+            <div class="no-transactions">
+              <i class="bi bi-receipt"></i>
+              <p>Nenhuma transação encontrada</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Estatísticas por Tipo -->
+      <div class="type-stats">
+        <h2>Estatísticas por Tipo de Transação</h2>
+        <div class="stats-grid">
+          <div class="stat-card compra">
+            <div class="stat-icon">
+              <i class="bi bi-credit-card"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value">{{ formatCurrency(getTotalPorTipo('compra')) }}</div>
+              <div class="stat-label">Compras de Créditos</div>
+              <div class="stat-count">{{ getTransacoesPorTipo('compra').length }} transações</div>
+            </div>
+          </div>
+
+          <div class="stat-card aposta">
+            <div class="stat-icon">
+              <i class="bi bi-dice-6"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value">{{ formatCurrency(getTotalPorTipo('aposta')) }}</div>
+              <div class="stat-label">Apostas Realizadas</div>
+              <div class="stat-count">{{ getTransacoesPorTipo('aposta').length }} apostas</div>
+            </div>
+          </div>
+
+          <div class="stat-card ganho">
+            <div class="stat-icon">
+              <i class="bi bi-trophy"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value">{{ formatCurrency(getTotalPorTipo('ganho')) }}</div>
+              <div class="stat-label">Ganhos Pagos</div>
+              <div class="stat-count">{{ getTransacoesPorTipo('ganho').length }} pagamentos</div>
+            </div>
+          </div>
+
+          <div class="stat-card reembolso">
+            <div class="stat-icon">
+              <i class="bi bi-arrow-counterclockwise"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value">{{ formatCurrency(getTotalPorTipo('reembolso')) }}</div>
+              <div class="stat-label">Reembolsos</div>
+              <div class="stat-count">{{ getTransacoesPorTipo('reembolso').length }} reembolsos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>

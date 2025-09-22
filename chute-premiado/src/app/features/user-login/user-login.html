@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Chute Certeiro</title>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <!-- Logo -->
+      <div class="logo-section">
+        <img class="logo" src="assets/img/logo.png" alt="Logo Chute Certeiro" />
+        <h1>Chute Certeiro</h1>
+        <p>Faça login para apostar nos seus jogos favoritos</p>
+      </div>
+
+      <!-- Formulário de Login -->
+      <div class="form-section" *ngIf="!showRegisterForm">
+        <h2>Entrar</h2>
+        
+        <form (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="nomeUsuario">Nome de Usuário:</label>
+            <input 
+              type="text" 
+              id="nomeUsuario"
+              [(ngModel)]="nomeUsuario"
+              name="nomeUsuario"
+              class="form-control"
+              placeholder="Digite seu nome de usuário"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="senha">Senha:</label>
+            <input 
+              type="password" 
+              id="senha"
+              [(ngModel)]="senha"
+              name="senha"
+              class="form-control"
+              placeholder="Digite sua senha"
+              required
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            class="btn-login"
+            [disabled]="isLoading"
+          >
+            <span *ngIf="isLoading">Entrando...</span>
+            <span *ngIf="!isLoading">Entrar</span>
+          </button>
+        </form>
+
+        <div class="form-links">
+          <button type="button" class="btn-link" (click)="toggleRegisterForm()">
+            Não tem conta? Cadastre-se
+          </button>
+        </div>
+      </div>
+
+      <!-- Formulário de Cadastro -->
+      <div class="form-section" *ngIf="showRegisterForm">
+        <h2>Cadastrar</h2>
+        
+        <form (ngSubmit)="onRegister()">
+          <div class="form-group">
+            <label for="nome">Nome Completo:</label>
+            <input 
+              type="text" 
+              id="nome"
+              [(ngModel)]="registerData.nome"
+              name="nome"
+              class="form-control"
+              placeholder="Digite seu nome completo"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="nomeUsuario">Nome de Usuário:</label>
+            <input 
+              type="text" 
+              id="nomeUsuario"
+              [(ngModel)]="registerData.nomeUsuario"
+              name="nomeUsuario"
+              class="form-control"
+              placeholder="Escolha um nome de usuário único"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input 
+              type="email" 
+              id="email"
+              [(ngModel)]="registerData.email"
+              name="email"
+              class="form-control"
+              placeholder="Digite seu email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="telefone">Telefone:</label>
+            <input 
+              type="tel" 
+              id="telefone"
+              [(ngModel)]="registerData.telefone"
+              name="telefone"
+              class="form-control"
+              placeholder="(11) 99999-9999"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="chavePix">Chave PIX:</label>
+            <input 
+              type="text" 
+              id="chavePix"
+              [(ngModel)]="registerData.chavePix"
+              name="chavePix"
+              class="form-control"
+              placeholder="Digite sua chave PIX"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="senha">Senha:</label>
+            <input 
+              type="password" 
+              id="senha"
+              [(ngModel)]="registerData.senha"
+              name="senha"
+              class="form-control"
+              placeholder="Digite sua senha"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="confirmarSenha">Confirmar Senha:</label>
+            <input 
+              type="password" 
+              id="confirmarSenha"
+              [(ngModel)]="registerData.confirmarSenha"
+              name="confirmarSenha"
+              class="form-control"
+              placeholder="Confirme sua senha"
+              required
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            class="btn-register"
+            [disabled]="isLoading"
+          >
+            <span *ngIf="isLoading">Cadastrando...</span>
+            <span *ngIf="!isLoading">Cadastrar</span>
+          </button>
+        </form>
+
+        <div class="form-links">
+          <button type="button" class="btn-link" (click)="toggleRegisterForm()">
+            Já tem conta? Faça login
+          </button>
+        </div>
+      </div>
+
+      <!-- Mensagem de erro -->
+      <div class="error-message" *ngIf="errorMessage">
+        <i class="bi bi-exclamation-triangle"></i>
+        {{ errorMessage }}
+      </div>
+
+      <!-- Link para admin -->
+      <div class="admin-link">
+        <button type="button" class="btn-admin" (click)="goToAdmin()">
+          <i class="bi bi-gear"></i>
+          Acesso Administrativo
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

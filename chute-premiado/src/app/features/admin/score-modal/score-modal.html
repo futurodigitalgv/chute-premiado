@@ -1,0 +1,167 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ showWinners ? 'Ganhadores do Jogo' : 'Inserir Placar Final' }}</h3>
+      <button type="button" class="btn-close" (click)="closeModal()">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+
+    <div class="modal-body" *ngIf="jogo">
+      <!-- Informações do jogo -->
+      <div class="game-info">
+        <div class="game-teams">
+          <div class="team">
+            <img class="team-logo" [src]="jogo.casaLogo" [alt]="jogo.casaNome">
+            <span class="team-name">{{ jogo.casaNome }}</span>
+          </div>
+
+          <div class="versus">X</div>
+
+          <div class="team">
+            <img class="team-logo" [src]="jogo.foraLogo" [alt]="jogo.foraNome">
+            <span class="team-name">{{ jogo.foraNome }}</span>
+          </div>
+        </div>
+
+        <div class="game-details">
+          <div class="detail-item">
+            <i class="bi bi-calendar"></i>
+            <span>{{ jogo.data | date:'dd/MM/yyyy · HH:mm' }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="bi bi-currency-dollar"></i>
+            <span>Valor da aposta: {{ formatCurrency(jogo.valorAposta) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulário de placar (se não finalizado) -->
+      <div class="score-form" *ngIf="!showWinners">
+        <h4>Insira o placar final:</h4>
+        
+        <div class="score-inputs">
+          <div class="score-input-group">
+            <label for="placarCasa">{{ jogo.casaNome }}:</label>
+            <input 
+              type="number" 
+              id="placarCasa" 
+              [(ngModel)]="placarCasa" 
+              name="placarCasa"
+              class="score-input"
+              min="0"
+              required
+            />
+          </div>
+
+          <div class="score-separator">-</div>
+
+          <div class="score-input-group">
+            <label for="placarFora">{{ jogo.foraNome }}:</label>
+            <input 
+              type="number" 
+              id="placarFora" 
+              [(ngModel)]="placarFora" 
+              name="placarFora"
+              class="score-input"
+              min="0"
+              required
+            />
+          </div>
+        </div>
+
+        <button 
+          type="button" 
+          class="btn-insert-score"
+          (click)="inserirPlacar()"
+          [disabled]="isLoading"
+        >
+          <span *ngIf="isLoading">Processando...</span>
+          <span *ngIf="!isLoading">Inserir Placar</span>
+        </button>
+      </div>
+
+      <!-- Placar final e ganhadores -->
+      <div class="final-score" *ngIf="showWinners">
+        <div class="score-display">
+          <div class="score-item">
+            <span class="team-name">{{ jogo.casaNome }}</span>
+            <span class="score">{{ placarCasa }}</span>
+          </div>
+          
+          <div class="score-separator">-</div>
+          
+          <div class="score-item">
+            <span class="score">{{ placarFora }}</span>
+            <span class="team-name">{{ jogo.foraNome }}</span>
+          </div>
+        </div>
+
+        <!-- Lista de ganhadores -->
+        <div class="winners-section">
+          <h4>Ganhadores ({{ ganhadores.length }})</h4>
+          
+          <div class="premio-info" *ngIf="ganhadores.length > 0">
+            <div class="premio-total">
+              <i class="bi bi-trophy"></i>
+              <span>Prêmio por ganhador: {{ formatCurrency(calcularPremioPorGanhador()) }}</span>
+            </div>
+          </div>
+
+          <div class="winners-list" *ngIf="ganhadores.length > 0; else noWinners">
+            <div class="winner-card" *ngFor="let ganhador of ganhadores">
+              <div class="winner-info">
+                <div class="winner-name">{{ ganhador.nome }}</div>
+                <div class="winner-details">
+                  <div class="detail">
+                    <i class="bi bi-telephone"></i>
+                    <span>{{ ganhador.telefone }}</span>
+                  </div>
+                  <div class="detail">
+                    <i class="bi bi-credit-card"></i>
+                    <span>{{ ganhador.chavePix }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="winner-prediction">
+                <span class="prediction-label">Palpite:</span>
+                <span class="prediction-score">{{ ganhador.placarCasa }} - {{ ganhador.placarFora }}</span>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #noWinners>
+            <div class="no-winners">
+              <i class="bi bi-emoji-frown"></i>
+              <h5>Nenhum ganhador</h5>
+              <p>Nenhum apostador acertou o placar final</p>
+              <div class="house-benefit">
+                <i class="bi bi-building"></i>
+                <span>💰 O valor do prêmio fica com a casa</span>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button 
+        type="button" 
+        class="btn-cancel"
+        (click)="closeModal()"
+      >
+        {{ showWinners ? 'Fechar' : 'Cancelar' }}
+      </button>
+      
+      <button 
+        type="button" 
+        class="btn-finalize"
+        (click)="finalizarJogo()"
+        *ngIf="showWinners"
+      >
+        Finalizar Jogo
+      </button>
+    </div>
+  </div>
+</div>

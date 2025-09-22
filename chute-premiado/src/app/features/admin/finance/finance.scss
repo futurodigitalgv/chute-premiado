@@ -1,0 +1,524 @@
+// Estilos para o gerenciamento de finanças
+.admin-header {
+  background: #0F2E22; // Verde escuro padrão do sistema
+  color: white;
+  padding: 0.5rem 0; // Reduzido de 1rem para 0.5rem
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3); // Sombra mais pronunciada como o padrão
+
+  .navbar {
+    padding: 0;
+  }
+
+  .container-fluid {
+    padding: 0.5rem 1rem; // Adicionado padding menor
+  }
+
+  .left-side {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; // Reduzido de 1rem para 0.75rem
+  }
+
+  .logo-chute {
+    height: 40px; // Reduzido significativamente
+    width: auto;
+  }
+
+  .admin-title h1 {
+    margin: 0;
+    font-size: 1.2rem; // Reduzido de 1.5rem para 1.2rem
+    font-weight: 600;
+  }
+
+  .right-side {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-back {
+    background: #fff; // Fundo branco como padrão do sistema
+    color: #111; // Texto escuro como padrão do sistema
+    border: 0; // Sem borda como padrão
+    padding: 0.4rem 0.8rem; // Reduzido de 0.5rem 1rem
+    border-radius: 10px; // Border radius padrão do sistema
+    transition: all 0.3s ease;
+    font-size: 0.9rem; // Adicionado tamanho menor da fonte
+    font-weight: 700; // Peso da fonte padrão
+    letter-spacing: 0.5px; // Espaçamento padrão
+    text-transform: uppercase; // Maiúsculas como padrão
+    cursor: pointer;
+
+    &:hover {
+      background: #1f7a1f; // Verde padrão do hover
+      color: #fff; // Texto branco no hover
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.admin-main {
+  padding: 1.5rem 0; // Reduzido de 2rem para 1.5rem
+  min-height: calc(100vh - 120px); // Ajustado para cabeçalho menor
+}
+
+.finance-summary {
+  margin-bottom: 3rem;
+
+  h2 {
+    color: #2a5298;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .card-icon {
+      font-size: 3rem;
+      opacity: 0.8;
+    }
+
+    .card-content {
+      flex: 1;
+
+      .card-value {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .card-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+
+      .card-subtitle {
+        font-size: 0.9rem;
+        opacity: 0.7;
+      }
+    }
+
+    &.receita {
+      border-left: 4px solid #28a745;
+      
+      .card-icon {
+        color: #28a745;
+      }
+      
+      .card-value {
+        color: #28a745;
+      }
+    }
+
+    &.despesa {
+      border-left: 4px solid #dc3545;
+      
+      .card-icon {
+        color: #dc3545;
+      }
+      
+      .card-value {
+        color: #dc3545;
+      }
+    }
+
+    &.lucro {
+      border-left: 4px solid #2a5298;
+      
+      .card-icon {
+        color: #2a5298;
+      }
+      
+      .card-value {
+        color: #2a5298;
+      }
+    }
+
+    &.creditos {
+      border-left: 4px solid #ffc107;
+      
+      .card-icon {
+        color: #ffc107;
+      }
+      
+      .card-value {
+        color: #ffc107;
+      }
+    }
+  }
+}
+
+.finance-breakdown {
+  margin-bottom: 3rem;
+
+  h2 {
+    color: #2a5298;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+  }
+
+  .breakdown-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .breakdown-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+    h3 {
+      color: #2a5298;
+      margin-bottom: 1.5rem;
+      font-size: 1.3rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .breakdown-content {
+      .breakdown-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f0f0f0;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &.total {
+          background: #f8f9ff;
+          margin: 0 -2rem;
+          padding: 1rem 2rem;
+          border-radius: 8px;
+          font-weight: 600;
+
+          .breakdown-label {
+            color: #2a5298;
+          }
+
+          .breakdown-value {
+            color: #2a5298;
+            font-size: 1.2rem;
+          }
+        }
+
+        .breakdown-label {
+          color: #666;
+          font-weight: 500;
+        }
+
+        .breakdown-value {
+          color: #2a5298;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+.transactions-section {
+  margin-bottom: 3rem;
+
+  h2 {
+    color: #2a5298;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+  }
+
+  .transactions-table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 2fr;
+      background: #2a5298;
+      color: white;
+      padding: 1rem;
+      font-weight: 600;
+
+      .header-cell {
+        padding: 0.5rem;
+      }
+    }
+
+    .table-body {
+      .table-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 2fr;
+        padding: 1rem;
+        border-bottom: 1px solid #f0f0f0;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: #f8f9ff;
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .table-cell {
+          padding: 0.5rem;
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+
+    .transaction-type {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+
+      &.tipo-compra {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      &.tipo-aposta {
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      &.tipo-ganho {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
+
+      &.tipo-reembolso {
+        background: #f8d7da;
+        color: #721c24;
+      }
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+
+      &.status-aprovado {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      &.status-pendente {
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      &.status-rejeitado {
+        background: #f8d7da;
+        color: #721c24;
+      }
+    }
+
+    .no-transactions {
+      text-align: center;
+      padding: 3rem;
+      color: #666;
+
+      i {
+        font-size: 3rem;
+        color: #ddd;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+.type-stats {
+  h2 {
+    color: #2a5298;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .stat-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-content {
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: #2a5298;
+      }
+
+      .stat-count {
+        font-size: 0.9rem;
+        color: #666;
+      }
+    }
+
+    &.compra {
+      border-top: 4px solid #28a745;
+      
+      .stat-icon {
+        color: #28a745;
+      }
+      
+      .stat-value {
+        color: #28a745;
+      }
+    }
+
+    &.aposta {
+      border-top: 4px solid #ffc107;
+      
+      .stat-icon {
+        color: #ffc107;
+      }
+      
+      .stat-value {
+        color: #ffc107;
+      }
+    }
+
+    &.ganho {
+      border-top: 4px solid #17a2b8;
+      
+      .stat-icon {
+        color: #17a2b8;
+      }
+      
+      .stat-value {
+        color: #17a2b8;
+      }
+    }
+
+    &.reembolso {
+      border-top: 4px solid #dc3545;
+      
+      .stat-icon {
+        color: #dc3545;
+      }
+      
+      .stat-value {
+        color: #dc3545;
+      }
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 0.4rem 0; // Ainda menor em mobile
+    
+    .container-fluid {
+      padding: 0.4rem 0.8rem; // Padding menor em mobile
+    }
+    
+    .left-side {
+      gap: 0.5rem; // Gap menor em mobile
+    }
+    
+    .logo-chute {
+      height: 35px; // Logo ainda menor em mobile
+    }
+    
+    .admin-title h1 {
+      font-size: 1rem; // Título menor em mobile
+    }
+    
+    .btn-back {
+      padding: 0.3rem 0.6rem; // Botão menor em mobile
+      font-size: 0.8rem;
+      font-weight: 700; // Manter peso da fonte
+      letter-spacing: 0.5px; // Manter espaçamento
+      text-transform: uppercase; // Manter maiúsculas
+    }
+  }
+  
+  .admin-main {
+    padding: 1rem 0; // Padding menor em mobile
+    min-height: calc(100vh - 100px); // Ajustado para mobile
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .breakdown-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .transactions-table {
+    .table-header,
+    .table-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .table-cell {
+      justify-content: space-between;
+      
+      &::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #666;
+      }
+    }
+  }
+}

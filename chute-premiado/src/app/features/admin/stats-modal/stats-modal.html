@@ -1,0 +1,116 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Estatísticas do Jogo</h3>
+      <button type="button" class="btn-close" (click)="closeModal()">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+
+    <div class="modal-body" *ngIf="jogo">
+      <!-- Informações do jogo -->
+      <div class="game-info">
+        <div class="game-teams">
+          <div class="team">
+            <img class="team-logo" [src]="jogo.casaLogo" [alt]="jogo.casaNome">
+            <span class="team-name">{{ jogo.casaNome }}</span>
+          </div>
+
+          <div class="versus">X</div>
+
+          <div class="team">
+            <img class="team-logo" [src]="jogo.foraLogo" [alt]="jogo.foraNome">
+            <span class="team-name">{{ jogo.foraNome }}</span>
+          </div>
+        </div>
+
+        <div class="game-details">
+          <div class="detail-item">
+            <i class="bi bi-calendar"></i>
+            <span>{{ jogo.data | date:'dd/MM/yyyy · HH:mm' }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="bi bi-currency-dollar"></i>
+            <span>Valor da aposta: {{ formatCurrency(jogo.valorAposta) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estatísticas -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ stats.totalApostas }}</div>
+            <div class="stat-label">Total de Apostas</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="bi bi-cash-stack"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ formatCurrency(stats.valorTotal) }}</div>
+            <div class="stat-label">Valor Total Arrecadado</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="bi bi-building"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ formatCurrency(stats.valorCasa) }}</div>
+            <div class="stat-label">Valor da Casa (10%)</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="bi bi-trophy"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ formatCurrency(stats.valorPremio) }}</div>
+            <div class="stat-label">Valor do Prêmio</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumo -->
+      <div class="summary">
+        <h4>Resumo Financeiro</h4>
+        <div class="summary-item">
+          <span class="summary-label">Total Arrecadado:</span>
+          <span class="summary-value">{{ formatCurrency(stats.valorTotal) }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Taxa da Casa (10%):</span>
+          <span class="summary-value">{{ formatCurrency(stats.valorCasa) }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Prêmio Disponível:</span>
+          <span class="summary-value">{{ formatCurrency(stats.valorPremio) }}</span>
+        </div>
+        
+        <!-- Informação sobre valor da casa quando não há ganhadores -->
+        <div class="summary-item house-total" *ngIf="jogo?.finalizado && stats.valorCasaTotal > stats.valorCasa">
+          <span class="summary-label">💰 Valor Total da Casa:</span>
+          <span class="summary-value">{{ formatCurrency(stats.valorCasaTotal) }}</span>
+          <div class="house-note">
+            <i class="bi bi-info-circle"></i>
+            <span>Inclui o prêmio não distribuído (nenhum ganhador)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn-close-modal" (click)="closeModal()">
+        Fechar
+      </button>
+    </div>
+  </div>
+</div>

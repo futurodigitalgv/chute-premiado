@@ -1,0 +1,593 @@
+// Estilos para o gerenciamento de jogadores
+.admin-header {
+  background: #0F2E22; // Verde escuro padrão do sistema
+  color: white;
+  padding: 0.5rem 0; // Reduzido de 1rem para 0.5rem
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3); // Sombra mais pronunciada como o padrão
+
+  .navbar {
+    padding: 0;
+  }
+
+  .container-fluid {
+    padding: 0.5rem 1rem; // Adicionado padding menor
+  }
+
+  .left-side {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; // Reduzido de 1rem para 0.75rem
+  }
+
+  .logo-chute {
+    height: 40px; // Reduzido significativamente
+    width: auto;
+  }
+
+  .admin-title h1 {
+    margin: 0;
+    font-size: 1.2rem; // Reduzido de 1.5rem para 1.2rem
+    font-weight: 600;
+  }
+
+  .right-side {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-back {
+    background: #fff; // Fundo branco como padrão do sistema
+    color: #111; // Texto escuro como padrão do sistema
+    border: 0; // Sem borda como padrão
+    padding: 0.4rem 0.8rem; // Reduzido de 0.5rem 1rem
+    border-radius: 10px; // Border radius padrão do sistema
+    transition: all 0.3s ease;
+    font-size: 0.9rem; // Adicionado tamanho menor da fonte
+    font-weight: 700; // Peso da fonte padrão
+    letter-spacing: 0.5px; // Espaçamento padrão
+    text-transform: uppercase; // Maiúsculas como padrão
+    cursor: pointer;
+
+    &:hover {
+      background: #1f7a1f; // Verde padrão do hover
+      color: #fff; // Texto branco no hover
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.admin-main {
+  padding: 1.5rem 0; // Reduzido de 2rem para 1.5rem
+  min-height: calc(100vh - 120px); // Ajustado para cabeçalho menor
+}
+
+.players-section {
+  margin-bottom: 2rem;
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.player-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: #2a5298;
+  }
+
+  &.selected {
+    border-color: #2a5298;
+    background: #f8f9ff;
+  }
+}
+
+.player-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  .player-avatar {
+    font-size: 3rem;
+    color: #2a5298;
+  }
+
+  .player-info {
+    flex: 1;
+
+    h3 {
+      margin: 0 0 0.25rem 0;
+      color: #2a5298;
+      font-size: 1.25rem;
+    }
+
+    p {
+      margin: 0 0 0.5rem 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &.status-active {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  &.status-blocked {
+    background: #f8d7da;
+    color: #721c24;
+  }
+}
+
+.player-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  .stat-item {
+    text-align: center;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+
+    i {
+      font-size: 1.5rem;
+      color: #2a5298;
+      margin-bottom: 0.5rem;
+    }
+
+    span {
+      display: block;
+      font-weight: 600;
+      color: #2a5298;
+      font-size: 1.1rem;
+    }
+
+    small {
+      color: #666;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.player-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+
+  .btn-action {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+
+    &.btn-block {
+      background: #ffc107;
+      color: #856404;
+
+      &:hover {
+        background: #e0a800;
+      }
+
+      &.btn-unblock {
+        background: #28a745;
+        color: white;
+
+        &:hover {
+          background: #218838;
+        }
+      }
+    }
+
+    &.btn-delete {
+      background: #dc3545;
+      color: white;
+
+      &:hover {
+        background: #c82333;
+      }
+    }
+  }
+}
+
+.no-players {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+
+  i {
+    font-size: 4rem;
+    color: #ddd;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    color: #2a5298;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.player-details {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  margin-top: 2rem;
+
+  .details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0f0f0;
+
+    h2 {
+      margin: 0;
+      color: #2a5298;
+    }
+
+    .btn-close-details {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+
+      &:hover {
+        background: #c82333;
+      }
+    }
+  }
+
+  .details-section {
+    margin-bottom: 2rem;
+
+    h3 {
+      color: #2a5298;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      label {
+        font-weight: 600;
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      span {
+        color: #2a5298;
+        font-size: 1rem;
+
+        &.block-reason {
+          color: #dc3545;
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+
+    .stat-card {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+
+      .stat-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+
+        &.text-success {
+          color: #28a745;
+        }
+
+        &.text-danger {
+          color: #dc3545;
+        }
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2a5298;
+        margin-bottom: 0.25rem;
+      }
+
+      .stat-label {
+        color: #666;
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  .betting-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+
+    .betting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+
+      .betting-label {
+        color: #666;
+        font-weight: 500;
+      }
+
+      .betting-value {
+        color: #2a5298;
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+// Modais
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+
+  h3 {
+    margin: 0;
+    color: #2a5298;
+  }
+
+  .btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+
+    &:hover {
+      color: #dc3545;
+    }
+  }
+}
+
+.modal-body {
+  padding: 1.5rem;
+
+  .form-group {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #2a5298;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+
+      &:focus {
+        outline: none;
+        border-color: #2a5298;
+        box-shadow: 0 0 0 2px rgba(42, 82, 152, 0.1);
+      }
+    }
+  }
+
+  .block-info {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+
+    p {
+      margin: 0 0 0.5rem 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .warning-message {
+    text-align: center;
+    padding: 1rem;
+
+    i {
+      font-size: 3rem;
+      color: #ffc107;
+      margin-bottom: 1rem;
+    }
+
+    h4 {
+      color: #dc3545;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 0.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+
+  .btn-cancel {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      background: #5a6268;
+    }
+  }
+
+  .btn-confirm {
+    background: #2a5298;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      background: #1e3c72;
+    }
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
+
+  .btn-delete-confirm {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      background: #c82333;
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 0.4rem 0; // Ainda menor em mobile
+    
+    .container-fluid {
+      padding: 0.4rem 0.8rem; // Padding menor em mobile
+    }
+    
+    .left-side {
+      gap: 0.5rem; // Gap menor em mobile
+    }
+    
+    .logo-chute {
+      height: 35px; // Logo ainda menor em mobile
+    }
+    
+    .admin-title h1 {
+      font-size: 1rem; // Título menor em mobile
+    }
+    
+    .btn-back {
+      padding: 0.3rem 0.6rem; // Botão menor em mobile
+      font-size: 0.8rem;
+      font-weight: 700; // Manter peso da fonte
+      letter-spacing: 0.5px; // Manter espaçamento
+      text-transform: uppercase; // Manter maiúsculas
+    }
+  }
+  
+  .admin-main {
+    padding: 1rem 0; // Padding menor em mobile
+    min-height: calc(100vh - 100px); // Ajustado para mobile
+  }
+
+  .players-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .player-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .betting-stats {
+    grid-template-columns: 1fr;
+  }
+}

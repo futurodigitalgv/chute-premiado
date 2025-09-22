@@ -1,0 +1,373 @@
+.admin-header {
+  background: #0F2E22; /* Verde muito escuro, quase preto, como o da página principal */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Sombra mais pronunciada para destacar */
+
+  .navbar {
+    padding: 8px 0; /* Reduzir o padding para diminuir a altura do cabeçalho */
+    min-height: 60px; /* Definir uma altura mínima para o cabeçalho */
+    display: flex;
+    align-items: center;
+  }
+
+  .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px; /* Adicionar padding horizontal para o conteúdo */
+  }
+
+  .left-side {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-brand {
+    margin-right: 15px; /* Espaçamento entre o logo e o título */
+  }
+
+  .logo-chute {
+    width: 40px; /* Ajustar o tamanho do logo para ser mais compacto */
+    height: auto;
+  }
+
+  .admin-title {
+    h1 {
+      color: white;
+      margin: 0;
+      font-size: 18px; /* Reduzir o tamanho da fonte para ser mais discreto */
+      font-weight: 500;
+    }
+  }
+
+  .btn-logout {
+    background: none; /* Remover fundo sólido */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4); /* Borda sutil branca */
+    padding: 6px 12px; /* Ajustar padding */
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1); /* Fundo sutil ao passar o mouse */
+      transform: translateY(-1px);
+    }
+
+    i {
+      margin-right: 5px;
+    }
+  }
+}
+
+.admin-main {
+  min-height: calc(100vh - 80px);
+  background: #2d5016; /* Verde oliva escuro igual ao da página inicial */
+  padding: 30px 0;
+}
+
+.admin-header-section {
+  margin-bottom: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    margin: 0 0 20px 0;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .admin-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .btn-action {
+    background: #1a4d3a; /* Verde escuro igual ao botão "FAZER BOLÃO" da página inicial */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      background: #0F2E22; /* Verde mais escuro no hover */
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(26, 77, 58, 0.3);
+    }
+
+    &.btn-create-game {
+      background: #28a745;
+      
+      &:hover {
+        background: #218838;
+        box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+      }
+    }
+
+    &.btn-manage-players {
+      background: #17a2b8;
+      
+      &:hover {
+        background: #138496;
+        box-shadow: 0 8px 20px rgba(23, 162, 184, 0.3);
+      }
+    }
+
+    &.btn-manage-finance {
+      background: #ffc107;
+      color: #212529;
+      
+      &:hover {
+        background: #e0a800;
+        box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3);
+      }
+    }
+  }
+}
+
+.games-section {
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+  }
+
+  .game-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  .game-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: white; /* Fundo branco simples como na página inicial */
+
+    .team {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+
+      .team-logo {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-bottom: 8px;
+      }
+
+      .team-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+      }
+    }
+
+    .versus {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333; /* Preto como na página inicial */
+      margin: 0 20px;
+    }
+  }
+
+  .game-info {
+    padding: 20px;
+
+    .game-details {
+      margin-bottom: 15px;
+
+      .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #666;
+
+        i {
+          margin-right: 8px;
+          width: 16px;
+          color: #666; /* Cinza escuro como na página inicial */
+        }
+      }
+    }
+
+    .game-status {
+      text-align: center;
+
+      .status-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+
+        &.status-aberto {
+          background: #d4edda;
+          color: #155724;
+        }
+
+        &.status-encerrado {
+          background: #fff3cd;
+          color: #856404;
+        }
+
+        &.status-finalizado {
+          background: #f8d7da;
+          color: #721c24;
+        }
+      }
+    }
+  }
+
+  .game-score {
+    background: #1a4d3a; /* Verde escuro igual ao botão da página inicial */
+    color: white;
+    padding: 15px;
+    text-align: center;
+
+    .score-display {
+      font-size: 24px;
+      font-weight: bold;
+
+      .score {
+        display: inline-block;
+        min-width: 40px;
+      }
+
+      .score-separator {
+        margin: 0 10px;
+      }
+    }
+  }
+
+  .game-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    background: white; /* Fundo branco como na página inicial */
+    border-top: 1px solid #e0e0e0;
+
+    .btn-action {
+      background: none;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 16px;
+
+      &:hover:not(:disabled) {
+        transform: scale(1.1);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      &.btn-edit {
+        color: #007bff;
+
+        &:hover {
+          background: rgba(0, 123, 255, 0.1);
+        }
+      }
+
+      &.btn-stats {
+        color: #28a745;
+
+        &:hover {
+          background: rgba(40, 167, 69, 0.1);
+        }
+      }
+
+      &.btn-score {
+        color: #ffc107;
+
+        &:hover {
+          background: rgba(255, 193, 7, 0.1);
+        }
+      }
+
+      &.btn-delete {
+        color: #dc3545;
+
+        &:hover {
+          background: rgba(220, 53, 69, 0.1);
+        }
+      }
+    }
+  }
+
+  .no-games {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    i {
+      font-size: 64px;
+      color: #dee2e6;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      color: #6c757d;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #adb5bd;
+      margin: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-header-section {
+    .admin-actions {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-action {
+      justify-content: center;
+    }
+  }
+
+  .games-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .game-header {
+    .versus {
+      margin: 0 10px !important;
+    }
+  }
+}

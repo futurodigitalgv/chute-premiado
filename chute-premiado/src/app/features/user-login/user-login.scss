@@ -1,0 +1,236 @@
+// Estilos para o login de usuários
+.login-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2d5016 0%, #1a4d3a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 30px;
+
+  .logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 15px;
+  }
+
+  h1 {
+    color: #2d5016;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+  }
+
+  p {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+.form-section {
+  h2 {
+    color: #2d5016;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 25px 0;
+    text-align: center;
+  }
+}
+
+.form-group {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: #2d5016;
+      box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+    }
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+}
+
+.btn-login,
+.btn-register {
+  width: 100%;
+  background: #2d5016;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+
+  &:hover:not(:disabled) {
+    background: #1a4d3a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45, 80, 22, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.btn-register {
+  background: #28a745;
+
+  &:hover:not(:disabled) {
+    background: #218838;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+  }
+}
+
+.form-links {
+  text-align: center;
+  margin-bottom: 20px;
+
+  .btn-link {
+    background: none;
+    border: none;
+    color: #2d5016;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #1a4d3a;
+    }
+  }
+}
+
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  border: 1px solid #f5c6cb;
+
+  i {
+    font-size: 1.1rem;
+  }
+}
+
+.admin-link {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+
+  .btn-admin {
+    background: none;
+    border: 1px solid #6c757d;
+    color: #6c757d;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    &:hover {
+      background: #6c757d;
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    i {
+      font-size: 1rem;
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: 480px) {
+  .login-container {
+    padding: 10px;
+  }
+
+  .login-card {
+    padding: 30px 20px;
+  }
+
+  .logo-section {
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+
+  .form-section {
+    h2 {
+      font-size: 1.3rem;
+    }
+  }
+
+  .form-control {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .btn-login,
+  .btn-register {
+    padding: 12px 16px;
+    font-size: 1rem;
+  }
+}

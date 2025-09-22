@@ -1,0 +1,147 @@
+<div class="modal-overlay" *ngIf="isVisible" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Fazer Aposta</h3>
+      <button type="button" class="btn-close" (click)="onClose()">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+
+    <div class="modal-body" *ngIf="jogo">
+      <!-- Informações do jogo -->
+      <div class="game-info">
+        <div class="teams">
+          <div class="team">
+            <img [src]="jogo.casaLogo" [alt]="jogo.casaNome" class="team-logo">
+            <span class="team-name">{{ jogo.casaNome }}</span>
+          </div>
+          
+          <div class="vs">VS</div>
+          
+          <div class="team">
+            <img [src]="jogo.foraLogo" [alt]="jogo.foraNome" class="team-logo">
+            <span class="team-name">{{ jogo.foraNome }}</span>
+          </div>
+        </div>
+        
+        <div class="game-date">{{ jogo.data | date:'dd/MM/yyyy · HH:mm' }}</div>
+      </div>
+
+      <!-- Formulário de aposta -->
+      <form (ngSubmit)="onSubmit()" class="bet-form">
+        <div class="form-section">
+          <h4>Seu Palpite</h4>
+          
+          <div class="score-inputs">
+            <div class="score-input">
+              <label>{{ jogo.casaNome }}</label>
+              <input 
+                type="number" 
+                [(ngModel)]="placarCasa" 
+                name="placarCasa"
+                min="0"
+                max="99"
+                class="form-control"
+                required
+              />
+            </div>
+            
+            <div class="score-separator">X</div>
+            
+            <div class="score-input">
+              <label>{{ jogo.foraNome }}</label>
+              <input 
+                type="number" 
+                [(ngModel)]="placarFora" 
+                name="placarFora"
+                min="0"
+                max="99"
+                class="form-control"
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h4>Valor da Aposta</h4>
+          
+          <div class="bet-amount">
+            <div class="amount-input">
+              <label>Valor (R$)</label>
+              <input 
+                type="number" 
+                [(ngModel)]="valorAposta" 
+                name="valorAposta"
+                min="1"
+                step="1"
+                class="form-control"
+                required
+              />
+            </div>
+            
+            <div class="quick-amounts">
+              <button type="button" class="quick-btn" (click)="valorAposta = 5">R$ 5</button>
+              <button type="button" class="quick-btn" (click)="valorAposta = 10">R$ 10</button>
+              <button type="button" class="quick-btn" (click)="valorAposta = 25">R$ 25</button>
+              <button type="button" class="quick-btn" (click)="valorAposta = 50">R$ 50</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Informações do usuário -->
+        <div class="user-info" *ngIf="usuario">
+          <div class="balance-info">
+            <span class="label">Seus Créditos:</span>
+            <span class="balance">{{ formatCurrency(usuario.creditos) }}</span>
+          </div>
+          
+          <div class="balance-after" *ngIf="valorAposta > 0">
+            <span class="label">Após a aposta:</span>
+            <span class="balance" [class.insufficient]="usuario.creditos < valorAposta">
+              {{ formatCurrency(usuario.creditos - valorAposta) }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Mensagem de erro -->
+        <div class="error-message" *ngIf="errorMessage">
+          <i class="bi bi-exclamation-triangle"></i>
+          {{ errorMessage }}
+          
+          <button 
+            type="button" 
+            class="btn-add-credits" 
+            *ngIf="errorMessage === 'Créditos insuficientes'"
+            (click)="goToCredits()"
+          >
+            <i class="bi bi-plus-circle"></i>
+            Adicionar Créditos
+          </button>
+        </div>
+
+        <!-- Botões de ação -->
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="onClose()">
+            Cancelar
+          </button>
+          
+          <button 
+            type="submit" 
+            class="btn-confirm"
+            [disabled]="isLoading || !usuario || usuario.creditos < valorAposta"
+          >
+            <span *ngIf="isLoading">
+              <i class="bi bi-hourglass-split"></i>
+              Processando...
+            </span>
+            <span *ngIf="!isLoading">
+              <i class="bi bi-trophy"></i>
+              Confirmar Aposta
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <img class="logo-chute" src="assets/img/logo.png" alt="Logo Chute Certeiro" />
+      <h2>Painel Administrativo</h2>
+      <p>Faça login para acessar o painel</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username">Usuário:</label>
+        <input 
+          type="text" 
+          id="username" 
+          [(ngModel)]="username" 
+          name="username"
+          class="form-control"
+          placeholder="Digite seu usuário"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha:</label>
+        <input 
+          type="password" 
+          id="password" 
+          [(ngModel)]="password" 
+          name="password"
+          class="form-control"
+          placeholder="Digite sua senha"
+          required
+        />
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button 
+        type="submit" 
+        class="btn-login"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="isLoading">Entrando...</span>
+        <span *ngIf="!isLoading">Entrar</span>
+      </button>
+    </form>
+  </div>
+</div>
